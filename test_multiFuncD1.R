@@ -1,0 +1,32 @@
+library(testthat)
+library(mockery)
+
+describe("Test Multiple Functions at depth=1",{
+  it("can stub a single function at default depth (1)", {
+    print("can stub a single function at default depth (1)")
+    source("multiFuncD1.R")
+    mD1A <- mock(TRUE)
+    stub(Depth0.myFunction,'Depth1.myFunctionA',mD1A)
+    Depth0.myFunction()
+    expect_called(mD1A,1)
+  })
+  it("can stub a single function at depth=1", {
+    print("can stub a single function at depth=1")
+    source("multiFuncD1.R")
+    mD1A <- mock(TRUE)
+    stub(Depth0.myFunction,'Depth1.myFunctionA',mD1A,depth=1)
+    Depth0.myFunction()
+    expect_called(mD1A,1)
+  })
+  it("can stub multiple functions at depth=1", {
+    print("can stub multiple functions at depth=1")
+    source("multiFuncD1.R")
+    mD1A <- mock(TRUE)
+    mD1B <- mock(TRUE)
+    stub(Depth0.myFunction,'Depth1.myFunctionA',mD1A,depth=1)
+    stub(Depth0.myFunction,'Depth1.myFunctionB',mD1B,depth=1)
+    Depth0.myFunction()
+    expect_called(mD1A,1)
+    expect_called(mD1B,1)
+  })
+})
